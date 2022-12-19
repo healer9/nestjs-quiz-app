@@ -124,9 +124,6 @@ export class EmailDto {
     @IsNotEmpty()
     quizId: string;
 
-    @IsNotEmpty()
-    from: string;
-
     to: string[];
 
 }

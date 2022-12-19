@@ -1,5 +1,5 @@
 import { MailerService } from '@nestjs-modules/mailer';
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { EmailDto } from 'src/dto/request.dto';
 
 @Injectable()
@@ -8,11 +8,9 @@ export class MailService {
 
   async sendQuizInvitationn(emailDto: EmailDto) {
     const url = `localhost:3000/api/v1/quiz/${emailDto.quizId}`;
-    Logger.log(url)
-    Logger.log(emailDto.to)
     const response =  await this.mailerService.sendMail({
       to: emailDto.to,
-      from: emailDto.from, 
+      from: process.env.MAIL_FROM, 
       subject: 'Quiz Invitation',
       template: './invitation', 
       context: { // ✏️ filling curly brackets with content

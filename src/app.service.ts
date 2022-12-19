@@ -61,7 +61,19 @@ export class AppService {
       return { success: false, message: 'Unauthorized' };
     }
 
-    return { success: false, message: 'Unauthorized' };
+    var jwt = require('jsonwebtoken');
+     var payload = {
+      "userId": existingUser.id,
+      "name": existingUser.firstName + ' ' + existingUser.lastName,
+      "email": existingUser.email,
+      "role": existingUser.userType,
+    }
+    var options = {
+      "expiresIn": "1h",
+    }
+    var token = jwt.sign(payload, process.env.JWT_SECRET, options);
+
+    return { success: true, token: token };
   }
 
 

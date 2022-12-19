@@ -15,10 +15,11 @@ export class QuizController {
         return this.quizService.createQuiz(createQuizDto);
     }
 
-    @Get(":id")
+    @Post("details")
     @UsePipes(new ValidationPipe({ transform: true }))
-    async quizInfo(@Param('id') id: string) {
-        return this.quizService.quizInfo(id);
+    async quizInfo(@Body() id: any) {
+        Logger.log(id)
+        return this.quizService.quizInfo(id.quizId);
     }
 
 

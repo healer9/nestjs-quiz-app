@@ -19,7 +19,7 @@ export class QuizService {
 
         if(saveQuiz) {
             Logger.log(`[AppService][createUser] Quiz created successfully: ${quiz}`);
-            return {success: true, message: 'Quiz created successfully'};
+            return {success: true, quizId: saveQuiz.id};
         } else {
             Logger.error(`[AppService][createUser] While creating quiz: ${quiz}`);
             return {success: false, message: 'Error while creating quiz'};
@@ -28,6 +28,7 @@ export class QuizService {
 
 
     async quizInfo(id: string) {
+        Logger.log(id)
         const quiz = await this.quizModel.findOne({_id: id});
         if(!quiz) {
             Logger.error(`[AppService][quizInfo] Quiz not found: ${quiz}`);
@@ -134,7 +135,7 @@ export class QuizService {
         const attemptedQuestions = userResponse.response.length;
 
         if(attemptedQuestions >= 10) {
-            return {message: 'Quiz End'};
+            return {result: 'fail', message: 'Quiz End'};
         }
 
         const selectedResponse: userResponse = {
@@ -161,7 +162,7 @@ export class QuizService {
             userResponse.score = userResponse.score + positiveMarks
             if(request.questionNumber === 10) {
                 userResponse.save()
-                return {message: 'Quiz End'};
+                return {result: 'pass', message: 'Quiz End'};
             }
             userResponse.save()
             return this.getNextQuestion(quiz, request.questionNumber);
@@ -169,7 +170,7 @@ export class QuizService {
             userResponse.score = userResponse.score + negativeMarks;
             if(request.questionNumber === 1) {
                 userResponse.save()
-                return {message: 'Quiz End'};
+                return {result: 'fail', message: 'Quiz End'};
             }
             userResponse.save()
             return this.getNextQuestion(quiz, request.questionNumber - 2);
