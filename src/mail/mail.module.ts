@@ -8,11 +8,11 @@ import { MailService } from './mail.service';
   imports: [
     MailerModule.forRoot({
       transport: {
-        host: 'smtp.sendgrid.net',
+        host: process.env.SEND_GRID_HOST,
         secure: false,
         auth: {
-          user: 'apikey',
-          pass: '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',
+          user: process.env.SEND_GRID_USER,
+          pass: process.env.SEND_GRID_PASSWORD,
         },
       },
       defaults: {
