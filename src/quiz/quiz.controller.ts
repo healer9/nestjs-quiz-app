@@ -1,8 +1,9 @@
-import { Body, Controller, Get, Logger, Param, Post, Query, UsePipes, ValidationPipe } from "@nestjs/common";
+import { Body, Controller, Get, Logger, Param, Post, Query, UseInterceptors, UsePipes, ValidationPipe } from "@nestjs/common";
 import { CreateQuizDto, FetchQuestionDto, StartQuiz } from "src/dto/request.dto";
+import { RequestIntercepter } from "src/intercepter/request.intercepter";
 import { QuizService } from "./quiz.service";
 
-
+@UseInterceptors(RequestIntercepter)
 @Controller("api/v1/quiz/")
 export class QuizController {
 

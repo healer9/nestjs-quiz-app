@@ -1,8 +1,9 @@
-import { Body, Controller, Get, Post, Query, UsePipes, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Get, Post, Query, UseInterceptors, UsePipes, ValidationPipe } from '@nestjs/common';
 import { AppService } from './app.service';
 import { CreateUserDto, EmailDto, UserInfoDto, ValidateUserDto } from './dto/request.dto'
+import { RequestIntercepter } from './intercepter/request.intercepter';
 
-
+@UseInterceptors(RequestIntercepter)
 @Controller("api/v1/users/")
 export class AppController {
   constructor(private readonly appService: AppService) {}
@@ -27,6 +28,7 @@ export class AppController {
   }
 
   @Get("info")
+  @UseInterceptors()
   @UsePipes(new ValidationPipe({ transform: true }))
   async fetchUserInfo(@Query() email: UserInfoDto) {
     return this.appService.fetchUserInfo(email);

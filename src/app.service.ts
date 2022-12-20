@@ -1,4 +1,5 @@
 import { Injectable, Logger } from '@nestjs/common';
+import { JwtService } from '@nestjs/jwt';
 import { InjectModel } from '@nestjs/mongoose';
 import * as bcrypt from 'bcrypt';
 import { Model } from 'mongoose';
@@ -13,6 +14,7 @@ export class AppService {
   
   constructor(@InjectModel(User.name) private userModel: Model<User>,
       @InjectModel(Attempt.name) private attemptModel: Model<Attempt>,
+      private readonly jwtService: JwtService,
       private readonly mailService: MailService) {}
 
   async createUser(user: CreateUserDto) {
@@ -61,18 +63,14 @@ export class AppService {
       return { success: false, message: 'Unauthorized' };
     }
 
-    var jwt = require('jsonwebtoken');
-     var payload = {
-      "userId": existingUser.id,
-      "name": existingUser.firstName + ' ' + existingUser.lastName,
-      "email": existingUser.email,
-      "role": existingUser.userType,
+    const payload = {
+      userId: existingUser.id,
+      name: `${existingUser.firstName} ${existingUser.lastName}`,
+      email: existingUser.email,
+      role: existingUser.userType
     }
-    var options = {
-      "expiresIn": "1h",
-    }
-    var token = jwt.sign(payload, process.env.JWT_SECRET, options);
 
+    const token = this.jwtService.sign(payload);
     return { success: true, token: token };
   }
 

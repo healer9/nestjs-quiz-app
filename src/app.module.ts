@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
+import { JwtModule } from '@nestjs/jwt';
 import { MongooseModule } from '@nestjs/mongoose';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -14,6 +15,10 @@ import { QuizService } from './quiz/quiz.service';
 
 @Module({
   imports: [ConfigModule.forRoot(), MongooseModule.forRoot(`mongodb+srv://${process.env.DATABASE_USER}:${process.env.DATABASE_PASSWORD}@cluster0.yae8kwe.mongodb.net/quiz?retryWrites=true&w=majority`),
+            JwtModule.register({
+                secret: process.env.JWT_SECRET,
+                signOptions: { expiresIn: '1h' },
+            }),
           MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]),
           MongooseModule.forFeature([{ name: Quiz.name, schema: QuizSchema }]),
           MongooseModule.forFeature([{ name: Attempt.name, schema: AttemptSchema }]),
