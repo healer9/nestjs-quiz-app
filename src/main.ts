@@ -6,13 +6,13 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.useGlobalPipes(new ValidationPipe());
   
-  // app.enableCors({
-  //   allowedHeaders: ['content-type', 'auth-token'],
-  //   origin: ['https://nextjs-quiz-app-seven.vercel.app'],
-  //   methods: ['POST', 'PUT', 'DELETE', 'GET']
-  // });
+  app.enableCors({
+    allowedHeaders: '*',
+    origin: '*',
+    methods: '*'
+  });
 
-  await app.listen(process.env.PORT || 3000);
+  await app.listen(process.env.PORT || 3001);
 }
 
 bootstrap();
