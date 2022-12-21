@@ -2,7 +2,6 @@ import { Injectable, NestInterceptor, ExecutionContext, CallHandler, Logger, Una
 import { JwtService } from '@nestjs/jwt';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
-import { UserType } from 'src/enums/app.enum';
 
 @Injectable()
 export class RequestIntercepter implements NestInterceptor {
@@ -31,14 +30,14 @@ export class RequestIntercepter implements NestInterceptor {
             //     Logger.log(path);
             //     throw new UnauthorizedException();
             // }
-            Logger.log(payload)
+            Logger.log(`[RequestIntercepter][intercept] Role: ${payload.role}`)
             if(role == 'MEMBER' && !memeberAPIs.includes(path)) {
-                Logger.log(path);
+                Logger.error(path);
                 throw new UnauthorizedException();
             }
 
         } catch (error) {
-            Logger.log(path);
+            Logger.error(path);
             throw new UnauthorizedException();
         }
     }
