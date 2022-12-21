@@ -7,6 +7,7 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe());
   
   app.enableCors({
+    allowedHeaders: ['content-type', 'auth-token'],
     origin: ['https://nextjs-quiz-app-seven.vercel.app'],
     methods: ['POST', 'PUT', 'DELETE', 'GET']
   });
