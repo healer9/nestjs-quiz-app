@@ -76,6 +76,7 @@ export class AppService {
 
 
   async sendMail(emailDto: EmailDto) {
+    Logger.log(emailDto);
     return this.mailService.sendQuizInvitationn(emailDto);
   }
 
