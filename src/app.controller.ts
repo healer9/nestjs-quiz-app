@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Query, UseInterceptors, UsePipes, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Get, Options, Post, Query, UseInterceptors, UsePipes, ValidationPipe } from '@nestjs/common';
 import { AppService } from './app.service';
 import { CreateUserDto, EmailDto, UserInfoDto, ValidateUserDto } from './dto/request.dto'
 import { RequestIntercepter } from './intercepter/request.intercepter';
@@ -16,6 +16,7 @@ export class AppController {
 
 
   @Post("login")
+  @Options("login")
   @UsePipes(new ValidationPipe({ transform: true }))
   async ValidateUser(@Body() user : ValidateUserDto) {
     return this.appService.validateUser(user);
